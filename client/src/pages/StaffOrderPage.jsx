@@ -20,7 +20,12 @@ export default function StaffOrderPage() {
   if (user?.type !== 'staff') return <Navigate to="/staff-login" replace/>;
   if (!order) return <main className="container page"><div className="empty">Loading order…</div></main>;
   const save = async () => {
-    try { await api.patch(`/orders/${id}/assignment`, { chefId: chefId || null, bartenderId: bartenderId || null, status }); setMessage('Order updated successfully.'); load(); }
+    try {
+      await api.patch(`/orders/${id}/assignment`, { chefId: chefId || null, bartenderId: bartenderId || null, status });
+      setMessage('Order updated successfully.');
+      load();
+      setTimeout(() => setMessage(''), 3000);
+}
     catch (err) { setMessage(err.response?.data?.message || 'Update failed'); }
   };
   return <main className="container page narrow"><div className="order-top"><div><span className="eyebrow">Waiter workflow</span><h1>Order #{order._id.slice(-6).toUpperCase()}</h1><p className="muted">{

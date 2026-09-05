@@ -28,17 +28,25 @@ export default function OrderDetailsPage() {
     <section className="wait-card"><Clock3/><div><small>Estimated waiting time</small><strong>{order.estimatedWaitMins} minutes</strong><span>Actual: {order.actualWaitMins ?? 'Still in progress'}</span></
   div></section>
     <OrderTimeline status={order.status}/>
-    <section className="detail-card"><h2>Order details</h2>{order.items.map(i => <div className="summary-row" key={i._id}><span>{i.quantity} × {i.nameSnapshot}</span><strong>₦{(i.unitPrice*i.quantity).
-  toLocaleString()}</strong></div>)}<hr/><div className="summary-row"><span>Discount</span><strong>-₦{order.discountTotal.toLocaleString()}</strong></div><div className="summary-row grand"><span>Total</
-  span><strong>₦{order.grandTotal.toLocaleString()}</strong></div></section>
-    <section className="people-grid"><div><small>Waiter</small><strong>{order.waiter?.name || 'Assigning…'}</strong></div><div><small>Chef</small><strong>{order.chef?.name || 'Pending'}</strong></div><div>
+    <section className="detail-card">
+      <h2>Order details</h2>
+      {order.items.map(i => <div className="summary-row" key={i._id}><span>{i.quantity} × {i.nameSnapshot}</span><strong>₦{(i.unitPrice*i.quantity).toLocaleString()}</strong></div>)}<hr/>
+      <div className="summary-row">
+      <span>Discount</span>
+     <strong>-₦{order.discountTotal.toLocaleString()}</strong>
+      </div><div className="summary-row grand">
+      <span>Total</span><strong>₦{order.grandTotal.toLocaleString()}</strong></div>
+    </section>
+    <section className="people-grid">
+      <div><small>Waiter</small><strong>{order.waiter?.name || 'Assigning…'}</strong>
+      </div><div><small>Chef</small><strong>{order.chef?.name || 'Pending'}</strong></div><div>
   <small>Bartender</small><strong>{order.bartender?.name || 'Pending'}</strong></div></section>
     {user?.type === 'customer' && order.status === 'Delayed' && <section className="detail-card danger-panel"><h2><MessageSquareWarning/> Delay feedback</h2><label>Complaint<textarea value={complaint} 
   onChange={e => setComplaint(e.target.value)}/></label><button className="btn" onClick={sendComplaint}>Submit complaint</button><div className="rating-row"><Star/><span>Rating</span><select value={
   rating} onChange={e => setRating(e.target.value)}>{[1,2,3,4,5].map(v => <option key={v}>{v}</option>)}</select><button className="btn ghost" onClick={sendRating}>Save rating</button></div></section>}
     {user?.type === 'customer' && ['Served','Paid'].includes(order.status) && <section className="detail-card"><h2><Star/> Rate your order</h2><div className="rating-row"><select value={rating} onChange={
   e => setRating(e.target.value)}>{[1,2,3,4,5].map(v => <option key={v}>{v}</option>)}</select><button className="btn ghost" onClick={sendRating}>Save rating</button></div></section>}
-    {user?.type === 'customer' && order.status === 'Served' && <Link className="btn big full payment-cta" to={`/orders/${order._id}/pay`}><WalletCards/> Make pretend payment before exit</Link>}
+    {user?.type === 'customer' && order.status === 'Served' && <Link className="btn big full payment-cta" to={`/orders/${order._id}/pay`}><WalletCards/> Make payment before exit</Link>}
     {message && <div className="toast-inline">{message}</div>}
   </main>;
 }

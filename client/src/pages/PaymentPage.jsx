@@ -19,9 +19,31 @@ export default function PaymentPage() {
     try { await api.post('/payments', { orderId: order._id, method, tipAmount: Number(tipAmount), tipStaffId: order.waiter?._id || null }); navigate(`/orders/${order._id}`); }
     catch (err) { setError(err.response?.data?.message || 'Payment failed'); }
   };
-  return <main className="container page narrow"><div className="page-title"><span className="eyebrow">Pretend payment</span><h1>Settle before you exit.</h1><p className="warning"><ShieldCheck/> This is a 
-  simulated academic payment. No real money or bank credentials are processed.</p></div><section className="form-card"><div className="summary-row grand"><span>Order total</span><strong>₦{order.grandTotal.
-  toLocaleString()}</strong></div><label>Payment method<select value={method} onChange={e => setMethod(e.target.value)}>{['Demo Card','Demo Bank Transfer','Chowly Wallet','Apple Pay Demo','Google Pay Demo'].map(m => <option key={m}>{m}</option>)}</select></label><label>Tip for staff (optional)<input type="number" min="0" step="100" value={tipAmount} onChange={e => setTipAmount(e.target.value)}/></
-  label><div className="summary-row"><span>Demo amount to record</span><strong>₦{(order.grandTotal + Number(tipAmount || 0)).toLocaleString()}</strong></div>{error && <p className="error">{error}</p>
-  }<button className="btn big full" onClick={pay}>Record pretend payment</button></section></main>;
+  return (
+    <main className="container page narrow">
+      <div className="page-title"><span className="eyebrow">Make payment</span>
+        <h1>Settle before you exit.</h1><p className="warning">
+          <ShieldCheck/> This is a simulated academic payment. No real money or bank credentials are processed.
+        </p>
+      </div>
+      <section className="form-card">
+        <div className="summary-row grand">
+          <span>Order total</span><strong>₦{order.grandTotal.toLocaleString()}</strong>
+        </div>
+        <label>Payment method
+          <select value={method} onChange={e => setMethod(e.target.value)}>
+            {['Card','Bank Transfer','Chowly Wallet','Apple Pay Demo','Google Pay Demo'].map(m => <option key={m}>{m}</option>)}
+          </select>
+        </label>
+        <label>Tip for staff (optional)
+          <input type="number" min="0" step="100" value={tipAmount} onChange={e => setTipAmount(e.target.value)}/>
+        </label>
+        <div className="summary-row">
+          <span>Demo amount to record</span><strong>₦{(order.grandTotal + Number(tipAmount || 0)).toLocaleString()}</strong>
+        </div>
+        {error && <p className="error">{error}</p>}
+        <button className="btn big full" onClick={pay}>Record payment</button>
+      </section>
+    </main>
+  );
 }

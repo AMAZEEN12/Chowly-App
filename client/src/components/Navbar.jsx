@@ -20,7 +20,7 @@ export default function Navbar() {
             </NavLink>
           )}
           {user?.type === 'staff' && <NavLink to="/staff">Staff dashboard</NavLink>}
-          <NavLink to="/restaurant/apply">For restaurants</NavLink>
+          <NavLink to="/restaurant/register">List your restaurant</NavLink>
         </div>
         <div className="nav-actions">
           <Link className="icon-btn" to="/cart" aria-label="Cart"><ShoppingBag size={18}/><span>{count}</span></Link>

@@ -21,7 +21,7 @@ export default function LandingPage() {
             <div className="progress"><span style={{ width: '68%' }}/></div>
             <div className="row between muted"><span>Waiter: Tolu</span><span>Chef: Rachel</span></div>
           </div>
-          <div className="floating-cards"><div><Clock3/> Live wait</div><div><CreditCard/> Pretend pay</div><div><UtensilsCrossed/> Staff view</div></div>
+          <div className="floating-cards"><div><Clock3/> Live wait</div><div><CreditCard/> Fast Payments</div><div><UtensilsCrossed/> Staff view</div></div>
         </motion.div>
       </section>
       <section className="container section">

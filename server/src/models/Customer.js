@@ -4,19 +4,22 @@ const customerSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true, lowercase: true, trim: true },
   phone: String,
-  // Added for the profile/age-verification features: a customer's date of
-  // birth powers both the happy-birthday greeting and the 18+ check on
-  // alcoholic drinks. It is optional at signup so existing behaviour is
-  // unchanged, but ordering an alcoholic item requires it to be filled in.
   dateOfBirth: { type: Date, default: null },
-  password: { type: String, required: true, minlength: 6 }
+  password: {
+    type: String,
+    minlength: 6,
+    required: function () { return !this.googleId; }
+  },
+  googleId: { type: String, unique: true, sparse: true },
+  isVerified: { type: Boolean, default: false }
 }, { timestamps: true });
 customerSchema.pre('save', async function(next) {
-  if (!this.isModified('password')) return next();
+  if (!this.isModified('password') || !this.password) return next();
   this.password = await bcrypt.hash(this.password, 12);
   next();
 });
 customerSchema.methods.comparePassword = function(candidate) {
+  if (!this.password) return Promise.resolve(false);
   return bcrypt.compare(candidate, this.password);
 };
 export default mongoose.model('Customer', customerSchema);
