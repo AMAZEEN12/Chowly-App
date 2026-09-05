@@ -1,0 +1,10 @@
+import { Router } from 'express';
+import { getMe, loginCustomer, loginStaff, registerCustomer, updateMe } from '../controllers/auth.controller.js';
+import { protectCustomer } from '../middleware/auth.js';
+const router = Router();
+router.post('/customer/register', registerCustomer);
+router.post('/customer/login', loginCustomer);
+router.post('/staff/login', loginStaff);
+router.get('/me', protectCustomer, getMe);
+router.patch('/me', protectCustomer, updateMe);
+export default router;

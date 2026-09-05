@@ -1,0 +1,10 @@
+import { Router } from 'express';
+import { createOrder, getCustomerOrders, getOrder, listStaffOrders, updateOrderAssignment } from '../controllers/order.controller.js';
+import { protectAny, protectCustomer, protectStaff } from '../middleware/auth.js';
+const router = Router();
+router.post('/', protectCustomer, createOrder);
+router.get('/mine', protectCustomer, getCustomerOrders);
+router.get('/staff', protectStaff, listStaffOrders);
+router.get('/:id', protectAny, getOrder);
+router.patch('/:id/assignment', protectStaff, updateOrderAssignment);
+export default router;
