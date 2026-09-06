@@ -11,7 +11,7 @@ async function findOrCreateMenu(restaurantId, category) {
 // that was just self-registered.
 export async function createMenuItem(req, res, next) {
   try {
-    const { restaurant, name, description, category, price, prepTimeMins, discountPercent, isAlcoholic, imageUrl } = req.body;
+    const { restaurant, name, description, category, price, prepTimeMins, discountPercent, isAlcoholic } = req.body;
     if (!restaurant || !name || !category || price === undefined || prepTimeMins === undefined) {
       return res.status(400).json({ message: 'Restaurant, name, category, price and prep time are required' });
     }
@@ -22,7 +22,6 @@ export async function createMenuItem(req, res, next) {
       restaurant,
       name,
       description: description || '',
-      imageUrl: imageUrl || '',
       category,
       price,
       prepTimeMins,

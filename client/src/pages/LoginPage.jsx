@@ -23,16 +23,8 @@ export default function LoginPage() {
       }
     } catch (err) {
       const data = err.response?.data;
-      if (data?.unverified) {
-        setUnverifiedEmail(data.email);
-        setError(data.message);
-      } else if (data?.message) {
-        setError(data.message);
-      } else if (err.code === 'ERR_NETWORK') {
-        setError('Unable to reach the Chowly server. Please make sure the backend is running on port 5000.');
-      } else {
-        setError(mode === 'login' ? 'Sign in failed. Please check your email and password.' : 'Account creation failed. Please try again.');
-      }
+      if (data?.unverified) { setUnverifiedEmail(data.email); setError(data.message); }
+      else setError(data?.message || 'Sign in failed');
     }
   };
   const handleGoogle = async (credential) => {

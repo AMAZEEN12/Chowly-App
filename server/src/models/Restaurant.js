@@ -12,6 +12,9 @@ const restaurantSchema = new mongoose.Schema({
   cuisineTypes: [{ type: String }],
   promoText: { type: String, default: '' },
   cashbackPercent: { type: Number, default: 0, min: 0, max: 100 },
+  bankName: { type: String, default: 'Chowly Demo Bank' },
+  bankAccountName: { type: String, default: 'Chowly Restaurant Payments' },
+  bankAccountNumber: { type: String, default: '1012345678' },
   accent: { type: String, default: '#ff7a00' },
   isActive: { type: Boolean, default: true }
 }, { timestamps: true });

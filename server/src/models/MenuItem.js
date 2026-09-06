@@ -4,8 +4,6 @@ const menuItemSchema = new mongoose.Schema({
   restaurant: { type: mongoose.Schema.Types.ObjectId, ref: 'Restaurant', required: true, index: true },
   name: { type: String, required: true, trim: true },
   description: { type: String, default: '' },
-  // Stored as a data URL so a restaurant can upload an image without needing a separate file-storage service.
-  imageUrl: { type: String, default: '' },
   category: { type: String, enum: ['Food', 'Drink'], required: true },
   price: { type: Number, required: true, min: 0 },
   prepTimeMins: { type: Number, required: true, min: 1 },

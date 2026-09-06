@@ -91,10 +91,5 @@ Create a free MongoDB Atlas cluster, a database user, and allow network access f
 ### 5. Verify
 Open the deployed frontend link, sign up as a customer, place an order, then open the staff portal in another tab/device and confirm you can assign a chef/bartender and mark the order served.
 
-## Recent menu image fix
-
-- The demo **Malt** menu item now uses a real Malta Guinness bottle image instead of the broken Unsplash URL.
-- Existing databases that still contain the old broken Malt URL are repaired automatically when `npm run seed` is run again.
-- The menu card also has an image-error fallback for Malt, so the item can still display a real Malta Guinness image if the primary image host is unavailable.
-- Restaurant-uploaded menu images continue to be compressed automatically and fitted to the same menu-card image area; the restaurant owner does not need to choose image dimensions.
-- The server development CORS default accepts both Vite ports `5173` and `5174`.
+### Payment flow
+The customer payment screen now uses a staged, simulated checkout: saved cards/bank accounts/digital wallets are offered to returning customers, new customers can add a method, bank transfer displays the restaurant demo account and an “I have transferred” confirmation, and every method ends with a payment-success modal offering “Make another order” or “Exit app”. Full card numbers and CVV are not persisted.

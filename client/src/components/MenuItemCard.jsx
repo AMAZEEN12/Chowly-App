@@ -31,24 +31,25 @@ export default function MenuItemCard({ item }) {
       <div className={`menu-image ${item.category.toLowerCase()}`}>
         <img
           src={item.imageUrl || ({
-            'Zobo': 'https://commons.wikimedia.org/wiki/Special:FilePath/Chilled_Zobo_drink.jpg',
-            'Chapman': 'https://i.pinimg.com/736x/81/a4/cc/81a4cc8d14614b2e699ee3896cc59c23.jpg',
-            'Palm Wine': 'https://www.nairaland.com/attachments/5037988_palmwine_jpegb65231f7d6af6f0d7dc0dbd47e3269c2',
-            'Malt': 'https://static.wixstatic.com/media/667e45_8b47ea44df524cb6a078ff336db69eee~mv2.png/v1/fill/w_980,h_980,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/667e45_8b47ea44df524cb6a078ff336db69eee~mv2.png'
-          }[item.name] || 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=900&q=85')}
+    'Fried Rice': 'https://commons.wikimedia.org/wiki/Special:FilePath/Fried%20rice%20and%20chicken%20garnished%20with%20sweet%20corn%2C%20carrot%20and%20green%20peas.jpg',
+    'Grilled Chicken': 'https://www.nairaland.com/attachments/8463343_dsc6578_jpeg91cd1fd274125a9f2772336a67e4286a',
+    'Malt': 'https://static.wixstatic.com/media/667e45_8b47ea44df524cb6a078ff336db69eee~mv2.png/v1/fill/w_980,h_980,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/667e45_8b47ea44df524cb6a078ff336db69eee~mv2.png',
+    'Chapman': 'https://jehancancook.com/wp-content/uploads/2018/08/chapman-3.jpg',
+    'Jollof Rice': 'https://flawlessfood.co.uk/wp-content/uploads/2023/01/Jollof-Rice-04.jpg',
+    'Pounded Yam & Egusi': 'https://harambeeafrica.com/wp-content/uploads/2024/04/Yam-Egusi-Soup.jpg',
+    'Zobo': 'https://commons.wikimedia.org/wiki/Special:FilePath/Chilled_Zobo_drink.jpg',
+    'Suya Platter': 'https://i.etsystatic.com/25033905/r/il/3b57df/4774513273/il_1588xN.4774513273_dh0z.jpg',
+    'Palm Wine': 'https://seeafricatoday.com/wp-content/uploads/2022/10/Palm-wine-1140x1140.jpg',
+    'Catfish Pepper Soup': 'https://allnigerianfoods.com/wp-content/uploads/catfish-pepper-soup-recipe.jpg',
+    'Grilled Fish': 'https://ocdn.eu/pulscms-transforms/1/LOgk9kpTURBXy8yNDA3YTUzMzNkNzcyZGU2YTJlZTA4ZDIyMmE0YTM1My5qcGeQgaEwAA',
+    'Sparkling Water': 'https://product.hstatic.net/200000909439/product/8002270011023500_650x_1975e97bff7342a5af0a9ca635ca36c1_grande.png',
+    'Mocktail': 'https://goodemma.com/wp-content/uploads/Flavorful-non-alcoholic-cocktails.jpg',
+  }[item.name] || '')}
           alt={item.name}
           loading="lazy"
           onError={(event) => {
             event.currentTarget.onerror = null;
-            const fallback = {
-              'Zobo': 'https://commons.wikimedia.org/wiki/Special:FilePath/Chilled_Zobo_drink.jpg',
-              'Chapman': 'https://i.pinimg.com/736x/81/a4/cc/81a4cc8d14614b2e699ee3896cc59c23.jpg',
-              'Palm Wine': 'https://www.nairaland.com/attachments/5037988_palmwine_jpegb65231f7d6af6f0d7dc0dbd47e3269c2',
-              'Malt': 'https://static.wixstatic.com/media/667e45_8b47ea44df524cb6a078ff336db69eee~mv2.png/v1/fill/w_980,h_980,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/667e45_8b47ea44df524cb6a078ff336db69eee~mv2.png'
-            }[item.name];
-            event.currentTarget.src = fallback || (item.category === 'Food'
-              ? 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=900&q=85'
-              : 'https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=900&q=85');
+            event.currentTarget.style.visibility = 'hidden';
           }}
         />
       </div>

@@ -39,7 +39,7 @@ export async function getRestaurant(req, res, next) {
 // menu items and staff, then publishes it (isActive: true) when ready.
 export async function registerRestaurant(req, res, next) {
   try {
-    const { name, location, phone, email, cuisineTypes, promoText, cashbackPercent, accent } = req.body;
+    const { name, location, phone, email, cuisineTypes, promoText, cashbackPercent, accent, bankName, bankAccountName, bankAccountNumber } = req.body;
     if (!name || !location) return res.status(400).json({ message: 'Restaurant name and location are required' });
 
     const slug = await uniqueSlug(slugify(name));
@@ -54,6 +54,9 @@ export async function registerRestaurant(req, res, next) {
         : (cuisineTypes ? String(cuisineTypes).split(',').map(s => s.trim()).filter(Boolean) : []),
       promoText: promoText || '',
       cashbackPercent: cashbackPercent || 0,
+      bankName: bankName || undefined,
+      bankAccountName: bankAccountName || undefined,
+      bankAccountNumber: bankAccountNumber || undefined,
       accent: accent || '#ff7a00',
       isActive: false
     });
@@ -67,7 +70,7 @@ export async function updateRestaurant(req, res, next) {
   try {
     const restaurant = await Restaurant.findById(req.params.id);
     if (!restaurant) return res.status(404).json({ message: 'Restaurant not found' });
-    const editable = ['name', 'location', 'phone', 'email', 'cuisineTypes', 'promoText', 'cashbackPercent', 'accent', 'isActive'];
+    const editable = ['name', 'location', 'phone', 'email', 'cuisineTypes', 'promoText', 'cashbackPercent', 'bankName', 'bankAccountName', 'bankAccountNumber', 'accent', 'isActive'];
     for (const field of editable) {
       if (req.body[field] !== undefined) restaurant[field] = req.body[field];
     }

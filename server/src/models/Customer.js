@@ -11,7 +11,19 @@ const customerSchema = new mongoose.Schema({
     required: function () { return !this.googleId; }
   },
   googleId: { type: String, unique: true, sparse: true },
-  isVerified: { type: Boolean, default: false }
+  isVerified: { type: Boolean, default: false },
+  paymentMethods: [{
+    type: { type: String, enum: ['Card', 'Bank Transfer', 'Chowly Wallet', 'Apple Pay Demo', 'Google Pay Demo'], required: true },
+    label: { type: String, default: '' },
+    brand: { type: String, default: '' },
+    last4: { type: String, default: '' },
+    expiry: { type: String, default: '' },
+    accountName: { type: String, default: '' },
+    bankName: { type: String, default: '' },
+    email: { type: String, default: '' },
+    createdAt: { type: Date, default: Date.now }
+  }],
+  walletBalance: { type: Number, default: 0, min: 0 }
 }, { timestamps: true });
 customerSchema.pre('save', async function(next) {
   if (!this.isModified('password') || !this.password) return next();

@@ -1,7 +1,10 @@
 import { Router } from 'express';
-import { createPretendPayment, getOrderPayment } from '../controllers/payment.controller.js';
+import { createPretendPayment, getOrderPayment, listPaymentMethods, addPaymentMethod, deletePaymentMethod } from '../controllers/payment.controller.js';
 import { protectAny, protectCustomer } from '../middleware/auth.js';
 const router = Router();
+router.get('/methods', protectCustomer, listPaymentMethods);
+router.post('/methods', protectCustomer, addPaymentMethod);
+router.delete('/methods/:methodId', protectCustomer, deletePaymentMethod);
 router.post('/', protectCustomer, createPretendPayment);
 router.get('/order/:orderId', protectAny, getOrderPayment);
 export default router;
