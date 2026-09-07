@@ -93,3 +93,9 @@ Open the deployed frontend link, sign up as a customer, place an order, then ope
 
 ### Payment flow
 The customer payment screen now uses a staged, simulated checkout: saved cards/bank accounts/digital wallets are offered to returning customers, new customers can add a method, bank transfer displays the restaurant demo account and an “I have transferred” confirmation, and every method ends with a payment-success modal offering “Make another order” or “Exit app”. Full card numbers and CVV are not persisted.
+
+## Visual refresh
+- Customer-facing UI uses a warm Chowly palette inspired by modern food-delivery UX without copying another brand.
+- Food and restaurant artwork is bundled locally under `client/public/images`, so menu imagery does not depend on third-party image hosts.
+- The navigation includes a light/dark theme toggle and remembers the user's choice in browser storage.
+- The hero layout was widened and shifted to give the food visual more room while keeping a deliberate gap between the headline and imagery.

@@ -2,55 +2,78 @@ import { motion } from 'framer-motion';
 import { Clock3, Plus, BadgePercent } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+
+const localImages = {
+  'Fried Rice': '/images/menu/fried-rice.svg',
+  'Grilled Chicken': '/images/menu/grilled-chicken.svg',
+  'Malt': '/images/menu/malt.svg',
+  'Chapman': '/images/menu/chapman.svg',
+  'Jollof Rice': '/images/menu/jollof-rice.svg',
+  'Pounded Yam & Egusi': '/images/menu/pounded-yam-egusi.svg',
+  'Zobo': '/images/menu/zobo.svg',
+  'Suya Platter': '/images/menu/suya-platter.svg',
+  'Palm Wine': '/images/menu/palm-wine.svg',
+  'Catfish Pepper Soup': '/images/menu/catfish-pepper-soup.svg',
+  'Grilled Fish': '/images/menu/grilled-fish.svg',
+  'Sparkling Water': '/images/menu/sparkling-water.svg',
+  'Mocktail': '/images/menu/mocktail.svg'
+};
+
+// Real food/drink photography from Wikimedia Commons and established food sites.
+// A local SVG fallback is kept for resilience if a third-party image is unavailable.
+const realImages = {
+  'Fried Rice': 'https://commons.wikimedia.org/wiki/Special:FilePath/Fried%20rice%20and%20chicken%20garnished%20with%20sweet%20corn%2C%20carrot%20and%20green%20peas.jpg?width=1200',
+  'Grilled Chicken': 'https://commons.wikimedia.org/wiki/Special:FilePath/Grilled%20chicken%20meat.jpg?width=1200',
+  'Malt': 'https://commons.wikimedia.org/wiki/Special:FilePath/Guinness%20Malta.jpg?width=1200',
+  'Chapman': 'https://commons.wikimedia.org/wiki/Special:FilePath/A%20glass%20of%20Chapman.jpg?width=1200',
+  'Jollof Rice': 'https://commons.wikimedia.org/wiki/Special:FilePath/A%20Nigeria%20Jollof%20Rice%20with%20chicken.jpg?width=1200',
+  'Pounded Yam & Egusi': 'https://commons.wikimedia.org/wiki/Special:FilePath/Pounded%20yam%20and%20Egusi%20soup.jpg?width=1200',
+  'Zobo': 'https://commons.wikimedia.org/wiki/Special:FilePath/Zobo%20drink.jpg?width=1200',
+  'Suya Platter': 'https://commons.wikimedia.org/wiki/Special:FilePath/Nigerian%20home%20made%20suya%20and%20sliced%20onions.png?width=1200',
+  'Palm Wine': 'https://commons.wikimedia.org/wiki/Special:FilePath/Fresh%20Palm%20Wine.jpg?width=1200',
+  'Catfish Pepper Soup': 'https://commons.wikimedia.org/wiki/Special:FilePath/Nigerian%20prepared%20Pepper-Soup.jpg?width=1200',
+  'Grilled Fish': 'https://commons.wikimedia.org/wiki/Special:FilePath/Grilled%20fish%20in%20Northern%20Nigeria.jpg?width=1200',
+  'Sparkling Water': 'https://commons.wikimedia.org/wiki/Special:FilePath/A%20plastic%20bottle%20water.jpg?width=1200',
+  'Mocktail': 'https://commons.wikimedia.org/wiki/Special:FilePath/Assorted%20Mocktails.jpg?width=1200'
+};
+
 export default function MenuItemCard({ item }) {
   const { addItem } = useCart();
   const { user } = useAuth();
   const salePrice = Math.round(item.price * (1 - (item.discountPercent || 0) / 100));
-
-  // Age-verification feature: block adding an alcoholic item in the UI
-  // itself, with a clear reason. The real enforcement still happens
-  // server-side in order.controller.js when the order is submitted.
   const isBlockedByAge = item.isAlcoholic && (user?.age == null || user.age < 18);
+
+  const candidates = [item.imageUrl, realImages[item.name], localImages[item.name], '/images/menu/jollof-rice.svg'].filter(Boolean);
+
+  function handleImageError(event) {
+    const currentIndex = Number(event.currentTarget.dataset.imageIndex || 0);
+    const nextIndex = currentIndex + 1;
+    if (nextIndex < candidates.length) {
+      event.currentTarget.dataset.imageIndex = String(nextIndex);
+      event.currentTarget.src = candidates[nextIndex];
+    }
+  }
 
   function handleAdd() {
     if (isBlockedByAge) {
-      if (!user) {
-        alert('Sign in and add your date of birth to your profile to order alcoholic drinks (18+).');
-      } else if (user.age == null) {
-        alert('Add your date of birth in your profile before ordering an alcoholic drink (18+).');
-      } else {
-        alert('You must be 18 or older to order an alcoholic drink.');
-      }
+      if (!user) alert('Sign in and add your date of birth to your profile to order alcoholic drinks (18+).');
+      else if (user.age == null) alert('Add your date of birth in your profile before ordering an alcoholic drink (18+).');
+      else alert('You must be 18 or older to order an alcoholic drink.');
       return;
     }
     addItem(item);
   }
 
   return (
-    <motion.article layout whileHover={{ y: -4 }} className="menu-card">
+    <motion.article layout whileHover={{ y: -5 }} className="menu-card">
       <div className={`menu-image ${item.category.toLowerCase()}`}>
         <img
-          src={item.imageUrl || ({
-    'Fried Rice': 'https://commons.wikimedia.org/wiki/Special:FilePath/Fried%20rice%20and%20chicken%20garnished%20with%20sweet%20corn%2C%20carrot%20and%20green%20peas.jpg',
-    'Grilled Chicken': 'https://www.nairaland.com/attachments/8463343_dsc6578_jpeg91cd1fd274125a9f2772336a67e4286a',
-    'Malt': 'https://static.wixstatic.com/media/667e45_8b47ea44df524cb6a078ff336db69eee~mv2.png/v1/fill/w_980,h_980,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/667e45_8b47ea44df524cb6a078ff336db69eee~mv2.png',
-    'Chapman': 'https://jehancancook.com/wp-content/uploads/2018/08/chapman-3.jpg',
-    'Jollof Rice': 'https://flawlessfood.co.uk/wp-content/uploads/2023/01/Jollof-Rice-04.jpg',
-    'Pounded Yam & Egusi': 'https://harambeeafrica.com/wp-content/uploads/2024/04/Yam-Egusi-Soup.jpg',
-    'Zobo': 'https://commons.wikimedia.org/wiki/Special:FilePath/Chilled_Zobo_drink.jpg',
-    'Suya Platter': 'https://i.etsystatic.com/25033905/r/il/3b57df/4774513273/il_1588xN.4774513273_dh0z.jpg',
-    'Palm Wine': 'https://seeafricatoday.com/wp-content/uploads/2022/10/Palm-wine-1140x1140.jpg',
-    'Catfish Pepper Soup': 'https://allnigerianfoods.com/wp-content/uploads/catfish-pepper-soup-recipe.jpg',
-    'Grilled Fish': 'https://ocdn.eu/pulscms-transforms/1/LOgk9kpTURBXy8yNDA3YTUzMzNkNzcyZGU2YTJlZTA4ZDIyMmE0YTM1My5qcGeQgaEwAA',
-    'Sparkling Water': 'https://product.hstatic.net/200000909439/product/8002270011023500_650x_1975e97bff7342a5af0a9ca635ca36c1_grande.png',
-    'Mocktail': 'https://goodemma.com/wp-content/uploads/Flavorful-non-alcoholic-cocktails.jpg',
-  }[item.name] || '')}
+          src={candidates[0]}
+          data-image-index="0"
           alt={item.name}
           loading="lazy"
-          onError={(event) => {
-            event.currentTarget.onerror = null;
-            event.currentTarget.style.visibility = 'hidden';
-          }}
+          referrerPolicy="no-referrer"
+          onError={handleImageError}
         />
       </div>
       <div className="menu-card-content">

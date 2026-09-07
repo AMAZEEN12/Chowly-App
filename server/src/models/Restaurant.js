@@ -9,6 +9,7 @@ const restaurantSchema = new mongoose.Schema({
   longitude: { type: Number, default: null },
   phone: String,
   email: String,
+  imageUrl: { type: String, default: '' },
   cuisineTypes: [{ type: String }],
   promoText: { type: String, default: '' },
   cashbackPercent: { type: Number, default: 0, min: 0, max: 100 },

@@ -33,3 +33,31 @@ export async function listRestaurantStaff(req, res, next) {
     res.json(staff);
   } catch (err) { next(err); }
 }
+
+
+export async function updateStaff(req, res, next) {
+  try {
+    const staff = await Staff.findById(req.params.id);
+    if (!staff) return res.status(404).json({ message: 'Staff member not found' });
+    if (req.body.restaurant && String(staff.restaurant) !== String(req.body.restaurant)) {
+      return res.status(403).json({ message: 'That staff member does not belong to this restaurant' });
+    }
+    const { name, email, password, role, salary } = req.body;
+    if (role !== undefined && !['Waiter', 'Chef', 'Bartender'].includes(role)) {
+      return res.status(400).json({ message: 'Role must be Waiter, Chef or Bartender' });
+    }
+    if (email !== undefined) {
+      const normalizedEmail = String(email).toLowerCase().trim();
+      const duplicate = await Staff.findOne({ email: normalizedEmail, _id: { $ne: staff._id } });
+      if (duplicate) return res.status(409).json({ message: 'That email is already used by another staff member' });
+      staff.email = normalizedEmail;
+    }
+    if (name !== undefined) staff.name = name;
+    if (role !== undefined) staff.role = role;
+    if (salary !== undefined) staff.salary = salary;
+    // Leave the existing password untouched when the password box is blank.
+    if (password) staff.password = password;
+    await staff.save();
+    res.json({ id: staff._id, name: staff.name, email: staff.email, role: staff.role, salary: staff.salary, restaurant: staff.restaurant });
+  } catch (err) { next(err); }
+}

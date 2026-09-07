@@ -11,7 +11,7 @@ async function findOrCreateMenu(restaurantId, category) {
 // that was just self-registered.
 export async function createMenuItem(req, res, next) {
   try {
-    const { restaurant, name, description, category, price, prepTimeMins, discountPercent, isAlcoholic } = req.body;
+    const { restaurant, name, description, imageUrl, category, price, prepTimeMins, discountPercent, isAlcoholic } = req.body;
     if (!restaurant || !name || !category || price === undefined || prepTimeMins === undefined) {
       return res.status(400).json({ message: 'Restaurant, name, category, price and prep time are required' });
     }
@@ -22,6 +22,7 @@ export async function createMenuItem(req, res, next) {
       restaurant,
       name,
       description: description || '',
+      imageUrl: imageUrl || '',
       category,
       price,
       prepTimeMins,
@@ -43,9 +44,31 @@ export async function listAllMenuItemsForRestaurant(req, res, next) {
   } catch (err) { next(err); }
 }
 
+export async function updateMenuItem(req, res, next) {
+  try {
+    const item = await MenuItem.findById(req.params.id);
+    if (!item) return res.status(404).json({ message: 'Menu item not found' });
+    if (req.body.restaurant && String(item.restaurant) !== String(req.body.restaurant)) {
+      return res.status(403).json({ message: 'That menu item does not belong to this restaurant' });
+    }
+    const editable = ['name', 'description', 'imageUrl', 'category', 'price', 'prepTimeMins', 'discountPercent', 'availability', 'featured', 'isAlcoholic'];
+    for (const field of editable) {
+      if (req.body[field] !== undefined) item[field] = req.body[field];
+    }
+    if (!['Food', 'Drink'].includes(item.category)) return res.status(400).json({ message: 'Category must be Food or Drink' });
+    await item.save();
+    res.json(item);
+  } catch (err) { next(err); }
+}
+
 export async function deleteMenuItem(req, res, next) {
   try {
-    await MenuItem.findByIdAndDelete(req.params.id);
+    const item = await MenuItem.findById(req.params.id);
+    if (!item) return res.status(404).json({ message: 'Menu item not found' });
+    if (req.query.restaurant && String(item.restaurant) !== String(req.query.restaurant)) {
+      return res.status(403).json({ message: 'That menu item does not belong to this restaurant' });
+    }
+    await item.deleteOne();
     res.json({ message: 'Menu item removed' });
   } catch (err) { next(err); }
 }

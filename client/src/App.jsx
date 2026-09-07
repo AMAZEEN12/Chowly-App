@@ -21,8 +21,15 @@ import RestaurantRegisterPage from './pages/RestaurantRegisterPage';
 import RestaurantSetupPage from './pages/RestaurantSetupPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
+import BackButton from './components/BackButton';
+import Footer from './components/Footer';
 export default function App() {
-  return <BrowserRouter><Navbar/><CartToast/><Routes>
+  return <BrowserRouter>
+    <Navbar/>
+    <CartToast/>
+    <div className="app-shell">
+      <BackButton/>
+      <Routes>
     <Route path="/" element={<LandingPage/>}/>
     <Route path="/explore" element={<ExplorePage/>}/>
     <Route path="/restaurants/:id" element={<RestaurantPage/>}/>
@@ -45,5 +52,8 @@ export default function App() {
     <Route path="/restaurant/:id/setup" element={<RestaurantSetupPage/>}/>
     <Route path="/profile" element={<ProfilePage/>}/>
     <Route path="*" element={<main className="container page"><div className="empty"><h2>Page not found.</h2></div></main>}/>
-  </Routes></BrowserRouter>;
+      </Routes>
+    </div>
+    <Footer/>
+  </BrowserRouter>;
 }

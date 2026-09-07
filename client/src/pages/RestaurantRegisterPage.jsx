@@ -4,7 +4,7 @@ import api from '../api/client';
 
 export default function RestaurantRegisterPage() {
   const [form, setForm] = useState({
-    name: '', location: '', phone: '', email: '',
+    name: '', location: '', phone: '', email: '', imageUrl: '',
     cuisineTypes: '', promoText: '', cashbackPercent: 0, accent: '#ff7a00'
   });
   const [error, setError] = useState('');
@@ -44,6 +44,9 @@ export default function RestaurantRegisterPage() {
       </label>
       <label>Contact email
         <input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })}/>
+      </label>
+      <label>Restaurant cover image URL (optional)
+        <input value={form.imageUrl} onChange={e => setForm({ ...form, imageUrl: e.target.value })} placeholder="https://…"/>
       </label>
       <label>Cuisine types (comma separated)
         <input value={form.cuisineTypes} onChange={e => setForm({ ...form, cuisineTypes: e.target.value })} placeholder="Nigerian, Grill, Seafood"/>

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import PasswordInput from '../components/PasswordInput';
 
 export default function ResetPasswordPage() {
   const [searchParams] = useSearchParams();
@@ -41,8 +42,8 @@ export default function ResetPasswordPage() {
     <span className="eyebrow">{role === 'staff' ? 'Restaurant staff' : 'Customer account'}</span>
     <h1>Set a new password.</h1>
     <form className="form-stack" onSubmit={submit}>
-      <label>New password<input type="password" value={password} onChange={e => setPassword(e.target.value)} required/></label>
-      <label>Confirm new password<input type="password" value={confirm} onChange={e => setConfirm(e.target.value)} required/></label>
+      <label>New password<PasswordInput value={password} onChange={e => setPassword(e.target.value)} required autoComplete="new-password" /></label>
+      <label>Confirm new password<PasswordInput value={confirm} onChange={e => setConfirm(e.target.value)} required autoComplete="new-password" /></label>
       {error && <p className="error">{error}</p>}
       <button className="btn big full" disabled={loading}>{loading ? 'Saving…' : 'Set new password'}</button>
     </form>
